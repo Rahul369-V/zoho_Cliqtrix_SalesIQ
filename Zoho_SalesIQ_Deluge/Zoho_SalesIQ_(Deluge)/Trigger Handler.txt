@@ -1,0 +1,11 @@
+response = Map();
+response.put("action","reply");
+food_facts = {"AppleSauce was the first food eaten in space.🍎🍏","Potatoes were the first food planted in space🥔🥔","Pistachios aren’t nuts—they are actually fruits.🤔","Broccoli contains more protein than steak!🥦🥦","Raspberries are a member of the rose family.🍒🍓","Cucumbers are 95% water.💦🥒","Honey is basically bee vomit. Forager bees regurgitate it.🐝🍯","Figs aren’t fruits, they are flowers.😯😯","Chocolate was once used as currency.🍫","White chocolate isn't actually chocolate.🍫"};
+rand = randomNumber(0,food_facts.size() - 1);
+response.put("replies",{{"text":"Did You Know🤔❓❓","image":"https://blog.aweber.com/wp-content/uploads/2022/08/watermelon-fruit-animated-aweber.gif","image_position":"fit"},food_facts.get(rand),"Hello👋. It's always great to be of assistance😉","What can I do for you❓❓❓"});
+response.put("suggestions",{"Suggest me a delicious food🤤","Dionysus the Nutritionist😉.Ask me anything?","Dionysus the chef🧑‍🍳- Ask recipes"," Suggest me a diet Chart","Search by Cuisine🗺️","Order food with Dionysus🤤","Restaurant near me📌","End chat🛑"});
+// info "hello world";
+// header = {"X-RapidAPI-Key":"aaca3ec659mshad008fe7e5c8ba6p1edbe3jsn339f33687426","X-RapidAPI-Host":"spoonacular-recipe-food-nutrition-v1.p.rapidapi.com"};
+// api = getUrl("https://serpapi.com/search.json?q=McDonald's&location=austin,+texas,+united+states&tbm=lcl");
+// info api;
+return response;

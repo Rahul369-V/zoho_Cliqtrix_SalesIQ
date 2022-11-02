@@ -1,0 +1,990 @@
+response = Map();
+info answers;
+response.put("action","context");
+response.put("context_id",context_id);
+if(context_id.equals("Food"))
+{
+	Food = answers.get("Food").get("text");
+	if(Food.containsIgnoreCase("Yes"))
+	{
+		response.put("action","reply");
+		response.put("replies",{"Great!How do you like your food?"});
+		response.put("action","context");
+		response.put("context_id","VTaste");
+		question = Collection();
+		question1 = {"name":"VTaste","replies":{{"text":"Select your taste😋"}},"suggestions":{"Spicy","Sweet","Suprise me"}};
+		question.insert(question1);
+		response.put("questions",question);
+	}
+	else
+	{
+		response.put("action","reply");
+		response.put("replies",{"Great!How do you like your food?"});
+		response.put("action","context");
+		response.put("context_id","NTaste");
+		question = Collection();
+		question1 = {"name":"NTaste","replies":{{"text":"Select your taste🔥🔥😁"}},"suggestions":{"Spicy","Sweet","Suprise me"}};
+		question.insert(question1);
+		response.put("questions",question);
+	}
+}
+else if(context_id.equals("VTaste"))
+{
+	ans = answers.get("VTaste").get("text");
+	if(ans.containsIgnoreCase("Spicy"))
+	{
+		response.put("action","context");
+		response.put("context_id","VSpice");
+		question = Collection();
+		question1 = {"name":"VSpice","replies":{{"text":"How spicy do you like it?"}},"input":{"type":"slider","values":{"Mild😁","Spicy😯","Very spicy🔥"}}};
+		question.insert(question1);
+		response.put("questions",question);
+	}
+	ans = answers.get("VTaste").get("text");
+	if(ans.containsIgnoreCase("Sweet"))
+	{
+		response.put("action","context");
+		response.put("context_id","VSweet");
+		question = Collection();
+		question1 = {"name":"VSweet","replies":{{"text":"Do you like milk?"}},"suggestions":{"Yes","No"}};
+		question.insert(question1);
+		response.put("questions",question);
+	}
+	if(ans.containsIgnoreCase("Suprise me"))
+	{
+		response.put("action","context");
+		response.put("context_id","VSuprise");
+		question = Collection();
+		question1 = {"name":"VSuprise","replies":{{"text":"Preparing suprise🎁... Ready??"}},"suggestions":{"Suprise me"}};
+		question.insert(question1);
+		response.put("questions",question);
+	}
+}
+else if(context_id.equals("VSpice"))
+{
+	ans = answers.get("VSpice").get("text");
+	if(ans.equalsIgnoreCase("Mild😁"))
+	{
+		cri = "\"diet\" = \"veg\" and \"taste\" = \"mildSpicy\"";
+		spDishes = zoho.sheet.getRecords("fg0ty557a0cdb631c4042bb7e6ae7da7737fb","Sheet1",{"criteria":cri},"dbconnection");
+		// 		info  spDishes.get("records").size();
+		// 		info  spDishes.get("records").get(0).get("name");
+		info spDishes;
+		foodItem = Map();
+		foodCollection = {};
+		prev = -1;
+		for each  item in {1,2,3}
+		{
+			rand = randomNumber(prev + 1,spDishes.get("records").size() - 1);
+			prev = rand;
+			foodName = spDishes.get("records").get(prev).get("name");
+			foodImg = spDishes.get("records").get(prev).get("imageUrl");
+			foodDetails = spDishes.get("records").get(prev).get("Details");
+			foodIngridients = spDishes.get("records").get(prev).get("ingredients");
+			foodItem.put("text","Name : " + foodName + " , Details : " + foodDetails + " , Ingredients Used : " + foodIngridients.proper());
+			foodItem.put("image",foodImg);
+			foodItem.put("image_position","fit");
+			foodCollection.insert(foodItem);
+			foodItem = Map();
+		}
+		end = "Do you want to continue?";
+		foodCollection.insert(end);
+		inp = {"type":"select","options":{"Continue👍","End🔚"}};
+		response.put("action","context");
+		response.put("context_id","End");
+		question1 = {"name":"End","replies":foodCollection,"input":inp};
+		question2 = {"name":"check","replies":{"Sure!Are you a vegetarian?"},"suggestions":{"Yes!I am a vegetarian🍃","No!I am not🍗"}};
+		question = Collection();
+		question.insert(question1);
+		question.insert(question2);
+		response.put("questions",question);
+	}
+	else if(ans.equalsIgnoreCase("Spicy😯"))
+	{
+		cri = "\"diet\" = \"veg\" and \"taste\" = \"spicy\"";
+		spDishes = zoho.sheet.getRecords("fg0ty557a0cdb631c4042bb7e6ae7da7737fb","Sheet1",{"criteria":cri},"dbconnection");
+		foodItem = Map();
+		foodCollection = {};
+		prev = -1;
+		for each  item in {1,2,3}
+		{
+			rand = randomNumber(prev + 1,spDishes.get("records").size() - 1);
+			prev = rand;
+			foodName = spDishes.get("records").get(prev).get("name");
+			foodImg = spDishes.get("records").get(prev).get("imageUrl");
+			foodDetails = spDishes.get("records").get(prev).get("Details");
+			foodIngridients = spDishes.get("records").get(prev).get("ingredients");
+			foodItem.put("text","Name : " + foodName + " , Details : " + foodDetails + " , Ingredients Used : " + foodIngridients.proper());
+			foodItem.put("image",foodImg);
+			foodItem.put("image_position","fit");
+			foodCollection.insert(foodItem);
+			foodItem = Map();
+		}
+		end = "Do you want to continue?";
+		foodCollection.insert(end);
+		inp = {"type":"select","options":{"Continue👍","End🔚"}};
+		response.put("action","context");
+		response.put("context_id","End");
+		question1 = {"name":"End","replies":foodCollection,"input":inp};
+		question2 = {"name":"check","replies":{"Sure!Are you a vegetarian?"},"suggestions":{"Yes!I am a vegetarian🍃","No!I am not🍗"}};
+		question = Collection();
+		question.insert(question1);
+		question.insert(question2);
+		response.put("questions",question);
+	}
+	else if(ans.equalsIgnoreCase("Very spicy🔥"))
+	{
+		cri = "\"diet\" = \"veg\" and \"taste\" = \"very spicy\"";
+		spDishes = zoho.sheet.getRecords("fg0ty557a0cdb631c4042bb7e6ae7da7737fb","Sheet1",{"criteria":cri},"dbconnection");
+		foodItem = Map();
+		foodCollection = {};
+		prev = -1;
+		for each  item in {1,2,3}
+		{
+			rand = randomNumber(prev + 1,spDishes.get("records").size() - 1);
+			prev = rand;
+			foodName = spDishes.get("records").get(prev).get("name");
+			foodImg = spDishes.get("records").get(prev).get("imageUrl");
+			foodDetails = spDishes.get("records").get(prev).get("Details");
+			foodIngridients = spDishes.get("records").get(prev).get("ingredients");
+			foodItem.put("text","Name : " + foodName + " , Details : " + foodDetails + " , Ingredients Used : " + foodIngridients.proper());
+			foodItem.put("image",foodImg);
+			foodItem.put("image_position","fit");
+			foodCollection.insert(foodItem);
+			foodItem = Map();
+		}
+		end = "Do you want to continue?";
+		foodCollection.insert(end);
+		inp = {"type":"select","options":{"Continue👍","End🔚"}};
+		response.put("action","context");
+		response.put("context_id","End");
+		question1 = {"name":"End","replies":foodCollection,"input":inp};
+		question2 = {"name":"check","replies":{"Sure!Are you a vegetarian?"},"suggestions":{"Yes!I am a vegetarian🍃","No!I am not🍗"}};
+		question = Collection();
+		question.insert(question1);
+		question.insert(question2);
+		response.put("questions",question);
+	}
+}
+else if(context_id.equals("VSweet"))
+{
+	ans = answers.get("VSweet").get("text");
+	if(ans.containsIgnoreCase("Yes"))
+	{
+		cri = "\"diet\" = \"veg\" and \"taste\" = \"sweet w/ milk\"";
+		spDishes = zoho.sheet.getRecords("fg0ty557a0cdb631c4042bb7e6ae7da7737fb","Sheet1",{"criteria":cri},"dbconnection");
+		foodItem = Map();
+		foodCollection = {};
+		prev = -1;
+		for each  item in {1,2,3}
+		{
+			rand = randomNumber(prev + 1,spDishes.get("records").size() - 1);
+			prev = rand;
+			foodName = spDishes.get("records").get(prev).get("name");
+			foodImg = spDishes.get("records").get(prev).get("imageUrl");
+			foodDetails = spDishes.get("records").get(prev).get("Details");
+			foodIngridients = spDishes.get("records").get(prev).get("ingredients");
+			foodItem.put("text","Name : " + foodName + " , Details : " + foodDetails + " , Ingredients Used : " + foodIngridients.proper());
+			foodItem.put("image",foodImg);
+			foodItem.put("image_position","fit");
+			foodCollection.insert(foodItem);
+			foodItem = Map();
+		}
+		end = "Do you want to continue?";
+		foodCollection.insert(end);
+		inp = {"type":"select","options":{"Continue👍","End🔚"}};
+		response.put("action","context");
+		response.put("context_id","End");
+		question1 = {"name":"End","replies":foodCollection,"input":inp};
+		question2 = {"name":"check","replies":{"Sure!Are you a vegetarian?"},"suggestions":{"Yes!I am a vegetarian🍃","No!I am not🍗"}};
+		question = Collection();
+		question.insert(question1);
+		question.insert(question2);
+		response.put("questions",question);
+	}
+	if(ans.containsIgnoreCase("No"))
+	{
+		info " Not Like milk";
+		cri = "\"diet\" = \"veg\" and \"taste\" = \"sweet wo/ milk\"";
+		spDishes = zoho.sheet.getRecords("fg0ty557a0cdb631c4042bb7e6ae7da7737fb","Sheet1",{"criteria":cri},"dbconnection");
+		foodItem = Map();
+		foodCollection = {};
+		prev = -1;
+		for each  item in {1,2,3}
+		{
+			rand = randomNumber(prev + 1,spDishes.get("records").size() - 1);
+			prev = rand;
+			foodName = spDishes.get("records").get(prev).get("name");
+			foodImg = spDishes.get("records").get(prev).get("imageUrl");
+			foodDetails = spDishes.get("records").get(prev).get("Details");
+			foodIngridients = spDishes.get("records").get(prev).get("ingredients");
+			foodItem.put("text","Name : " + foodName + " , Details : " + foodDetails + " , Ingredients Used : " + foodIngridients.proper());
+			foodItem.put("image",foodImg);
+			foodItem.put("image_position","fit");
+			foodCollection.insert(foodItem);
+			foodItem = Map();
+		}
+		end = "Do you want to continue?";
+		foodCollection.insert(end);
+		inp = {"type":"select","options":{"Continue👍","End🔚"}};
+		response.put("action","context");
+		response.put("context_id","End");
+		question1 = {"name":"End","replies":foodCollection,"input":inp};
+		question2 = {"name":"check","replies":{"Sure!Are you a vegetarian?"},"suggestions":{"Yes!I am a vegetarian🍃","No!I am not🍗"}};
+		question = Collection();
+		question.insert(question1);
+		question.insert(question2);
+		response.put("questions",question);
+	}
+}
+else if(context_id.equals("VSuprise"))
+{
+	ans = answers.get("VSuprise").get("text");
+	info answers;
+	if(ans.containsIgnoreCase("Suprise"))
+	{
+		cri = "\"diet\" = \"veg\"";
+		spDishes = zoho.sheet.getRecords("fg0ty557a0cdb631c4042bb7e6ae7da7737fb","Sheet1",{"criteria":cri},"dbconnection");
+		foodItem = Map();
+		foodCollection = {};
+		rand = randomNumber(0,spDishes.get("records").size());
+		foodName = spDishes.get("records").get(rand).get("name");
+		foodImg = spDishes.get("records").get(rand).get("imageUrl");
+		foodDetails = spDishes.get("records").get(rand).get("Details");
+		foodIngridients = spDishes.get("records").get(rand).get("ingredients");
+		foodItem.put("text","Name : " + foodName + " , Details : " + foodDetails + " , Ingredients Used : " + foodIngridients.proper());
+		foodItem.put("image",foodImg);
+		foodItem.put("image_position","fit");
+		foodCollection.insert(foodItem);
+		foodItem = Map();
+		end = "Do you want to continue?";
+		foodCollection.insert(end);
+		inp = {"type":"select","options":{"More suprise","End🔚"}};
+		response.put("action","context");
+		response.put("context_id","VSuprise");
+		question1 = {"name":"VSuprise","replies":foodCollection,"input":inp};
+		question = Collection();
+		question.insert(question1);
+		response.put("questions",question);
+	}
+	else if(ans.equals("End🔚"))
+	{
+		response.put("action","context");
+		response.put("context_id","QuitChat");
+		star = {"type":"star-rating","level":"5"};
+		question1 = {"name":"FoodQueries","replies":{{"text":"Thank you👋😉","image":"https://cur.glitter-graphics.net/pub/3625/3625215ll379wgzp9.gif","image_position":"fit"},"kindly give Valuable FeedBack for our improvement🔥"},"input":star};
+		question = Collection();
+		question.insert(question1);
+		response.put("questions",question);
+	}
+}
+else if(context_id.equals("NTaste"))
+{
+	ans = answers.get("NTaste").get("text");
+	if(ans.containsIgnoreCase("Spicy"))
+	{
+		response.put("action","context");
+		response.put("context_id","NSpice");
+		question = Collection();
+		question1 = {"name":"NSpice","replies":{{"text":"How spicy do you like it?"}},"input":{"type":"slider","values":{"Mild😁","Spicy😯","Very spicy🔥"}}};
+		question.insert(question1);
+		response.put("questions",question);
+	}
+	ans = answers.get("NTaste").get("text");
+	if(ans.containsIgnoreCase("Sweet"))
+	{
+		response.put("action","context");
+		response.put("context_id","NSweet");
+		question = Collection();
+		question1 = {"name":"NSweet","replies":{{"text":"Do you like milk?"}},"suggestions":{"Yes","No"}};
+		question.insert(question1);
+		response.put("questions",question);
+	}
+	else if(ans.containsIgnoreCase("Suprise me"))
+	{
+		response.put("action","context");
+		response.put("context_id","NSuprise");
+		question = Collection();
+		question1 = {"name":"NSuprise","replies":{{"text":"Ready for your suprise🎁?"}},"suggestions":{"Suprise me"}};
+		question.insert(question1);
+		response.put("questions",question);
+	}
+}
+else if(context_id.equals("NSpice"))
+{
+	ans = answers.get("NSpice").get("text");
+	if(ans.equalsIgnoreCase("Mild😁"))
+	{
+		cri = "\"diet\" = \"non\" and \"taste\" = \"mildSpicy\"";
+		spDishes = zoho.sheet.getRecords("fg0ty557a0cdb631c4042bb7e6ae7da7737fb","Sheet1",{"criteria":cri},"dbconnection");
+		foodItem = Map();
+		foodCollection = {};
+		prev = -1;
+		for each  item in {1,2,3}
+		{
+			rand = randomNumber(prev + 1,spDishes.get("records").size() - 1);
+			prev = rand;
+			foodName = spDishes.get("records").get(prev).get("name");
+			foodImg = spDishes.get("records").get(prev).get("imageUrl");
+			foodDetails = spDishes.get("records").get(prev).get("Details");
+			foodIngridients = spDishes.get("records").get(prev).get("ingredients");
+			foodItem.put("text","Name : " + foodName + " , Details : " + foodDetails + " , Ingredients Used : " + foodIngridients.proper());
+			foodItem.put("image",foodImg);
+			foodItem.put("image_position","fit");
+			foodCollection.insert(foodItem);
+			foodItem = Map();
+		}
+		end = "Do you want to continue?";
+		foodCollection.insert(end);
+		inp = {"type":"select","options":{"Continue👍","End🔚"}};
+		response.put("action","context");
+		response.put("context_id","End");
+		question1 = {"name":"End","replies":foodCollection,"input":inp};
+		question2 = {"name":"check","replies":{"Sure!Are you a vegetarian?"},"suggestions":{"Yes!I am a vegetarian🍃","No!I am not🍗"}};
+		question = Collection();
+		question.insert(question1);
+		question.insert(question2);
+		response.put("questions",question);
+	}
+	else if(ans.equalsIgnoreCase("Spicy😯"))
+	{
+		cri = "\"diet\" = \"non\" and \"taste\" = \"spicy\"";
+		spDishes = zoho.sheet.getRecords("fg0ty557a0cdb631c4042bb7e6ae7da7737fb","Sheet1",{"criteria":cri},"dbconnection");
+		foodItem = Map();
+		foodCollection = {};
+		prev = -1;
+		for each  item in {1,2,3}
+		{
+			rand = randomNumber(prev + 1,spDishes.get("records").size() - 1);
+			prev = rand;
+			foodName = spDishes.get("records").get(prev).get("name");
+			foodImg = spDishes.get("records").get(prev).get("imageUrl");
+			foodDetails = spDishes.get("records").get(prev).get("Details");
+			foodIngridients = spDishes.get("records").get(prev).get("ingredients");
+			foodItem.put("text","Name : " + foodName + " , Details : " + foodDetails + " , Ingredients Used : " + foodIngridients.proper());
+			foodItem.put("image",foodImg);
+			foodItem.put("image_position","fit");
+			foodCollection.insert(foodItem);
+			foodItem = Map();
+		}
+		end = "Do you want to continue?";
+		foodCollection.insert(end);
+		inp = {"type":"select","options":{"Continue👍","End🔚"}};
+		response.put("action","context");
+		response.put("context_id","End");
+		question1 = {"name":"End","replies":foodCollection,"input":inp};
+		question2 = {"name":"check","replies":{"Sure!Are you a vegetarian?"},"suggestions":{"Yes!I am a vegetarian🍃","No!I am not🍗"}};
+		question = Collection();
+		question.insert(question1);
+		question.insert(question2);
+		response.put("questions",question);
+	}
+	else if(ans.equalsIgnoreCase("Very spicy🔥"))
+	{
+		cri = "\"diet\" = \"non\" and \"taste\" = \"very spicy\"";
+		spDishes = zoho.sheet.getRecords("fg0ty557a0cdb631c4042bb7e6ae7da7737fb","Sheet1",{"criteria":cri},"dbconnection");
+		foodItem = Map();
+		foodCollection = {};
+		prev = -1;
+		for each  item in {1,2,3}
+		{
+			rand = randomNumber(prev + 1,spDishes.get("records").size() - 1);
+			prev = rand;
+			foodName = spDishes.get("records").get(prev).get("name");
+			foodImg = spDishes.get("records").get(prev).get("imageUrl");
+			foodDetails = spDishes.get("records").get(prev).get("Details");
+			foodIngridients = spDishes.get("records").get(prev).get("ingredients");
+			foodItem.put("text","Name : " + foodName + " , Details : " + foodDetails + " , Ingredients Used : " + foodIngridients.proper());
+			foodItem.put("image",foodImg);
+			foodItem.put("image_position","fit");
+			foodCollection.insert(foodItem);
+			foodItem = Map();
+		}
+		end = "Do you want to continue?";
+		foodCollection.insert(end);
+		inp = {"type":"select","options":{"Continue👍","End🔚"}};
+		response.put("action","context");
+		response.put("context_id","End");
+		question1 = {"name":"End","replies":foodCollection,"input":inp};
+		question2 = {"name":"check","replies":{"Sure!Are you a vegetarian?"},"suggestions":{"Yes!I am a vegetarian🍃","No!I am not🍗"}};
+		question = Collection();
+		question.insert(question1);
+		question.insert(question2);
+		response.put("questions",question);
+	}
+}
+else if(context_id.equals("NSweet"))
+{
+	ans = answers.get("NSweet").get("text");
+	if(ans.containsIgnoreCase("Yes"))
+	{
+		info "Like milk";
+		cri = "\"diet\" = \"non\" and \"taste\" = \"sweet w/ milk\"";
+		spDishes = zoho.sheet.getRecords("fg0ty557a0cdb631c4042bb7e6ae7da7737fb","Sheet1",{"criteria":cri},"dbconnection");
+		foodItem = Map();
+		foodCollection = {};
+		prev = -1;
+		for each  item in {1,2,3}
+		{
+			rand = randomNumber(prev + 1,spDishes.get("records").size() - 1);
+			prev = rand;
+			foodName = spDishes.get("records").get(prev).get("name");
+			foodImg = spDishes.get("records").get(prev).get("imageUrl");
+			foodDetails = spDishes.get("records").get(prev).get("Details");
+			foodIngridients = spDishes.get("records").get(prev).get("ingredients");
+			foodItem.put("text","Name : " + foodName + " , Details : " + foodDetails + " , Ingredients Used : " + foodIngridients.proper());
+			foodItem.put("image",foodImg);
+			foodItem.put("image_position","fit");
+			foodCollection.insert(foodItem);
+			foodItem = Map();
+		}
+		end = "Do you want to continue?";
+		foodCollection.insert(end);
+		inp = {"type":"select","options":{"Continue👍","End🔚"}};
+		response.put("action","context");
+		response.put("context_id","End");
+		question1 = {"name":"End","replies":foodCollection,"input":inp};
+		question2 = {"name":"check","replies":{"Sure!Are you a vegetarian?"},"suggestions":{"Yes!I am a vegetarian🍃","No!I am not🍗"}};
+		question = Collection();
+		question.insert(question1);
+		question.insert(question2);
+		response.put("questions",question);
+	}
+	if(ans.containsIgnoreCase("No"))
+	{
+		info " Not Like milk";
+		cri = "\"diet\" = \"non\" and \"taste\" = \"sweet wo/ milk\"";
+		spDishes = zoho.sheet.getRecords("fg0ty557a0cdb631c4042bb7e6ae7da7737fb","Sheet1",{"criteria":cri},"dbconnection");
+		foodItem = Map();
+		foodCollection = {};
+		prev = -1;
+		for each  item in {1,2,3}
+		{
+			rand = randomNumber(prev + 1,spDishes.get("records").size() - 1);
+			prev = rand;
+			foodName = spDishes.get("records").get(prev).get("name");
+			foodImg = spDishes.get("records").get(prev).get("imageUrl");
+			foodDetails = spDishes.get("records").get(prev).get("Details");
+			foodIngridients = spDishes.get("records").get(prev).get("ingredients");
+			foodItem.put("text","Name : " + foodName + " , Details : " + foodDetails + " , Ingredients Used : " + foodIngridients.proper());
+			foodItem.put("image",foodImg);
+			foodItem.put("image_position","fit");
+			foodCollection.insert(foodItem);
+			foodItem = Map();
+		}
+		end = "Do you want to continue?";
+		foodCollection.insert(end);
+		inp = {"type":"select","options":{"Continue👍","End🔚"}};
+		response.put("action","context");
+		response.put("context_id","End");
+		question1 = {"name":"End","replies":foodCollection,"input":inp};
+		question2 = {"name":"check","replies":{"Sure!Are you a vegetarian?"},"suggestions":{"Yes!I am a vegetarian🍃","No!I am not🍗"}};
+		question = Collection();
+		question.insert(question1);
+		question.insert(question2);
+		response.put("questions",question);
+	}
+}
+else if(context_id.equals("NSuprise"))
+{
+	ans = answers.get("NSuprise").get("text");
+	if(ans.containsIgnoreCase("Suprise"))
+	{
+		cri = "\"diet\" = \"non\"";
+		spDishes = zoho.sheet.getRecords("fg0ty557a0cdb631c4042bb7e6ae7da7737fb","Sheet1",{"criteria":cri},"dbconnection");
+		foodItem = Map();
+		foodCollection = {};
+		rand = randomNumber(0,spDishes.get("records").size());
+		foodName = spDishes.get("records").get(rand).get("name");
+		foodImg = spDishes.get("records").get(rand).get("imageUrl");
+		foodDetails = spDishes.get("records").get(rand).get("Details");
+		foodIngridients = spDishes.get("records").get(rand).get("ingredients");
+		foodItem.put("text","Name : " + foodName + " , Details : " + foodDetails + " , Ingredients Used : " + foodIngridients.proper());
+		foodItem.put("image",foodImg);
+		foodItem.put("image_position","fit");
+		foodCollection.insert(foodItem);
+		foodItem = Map();
+		end = "Do you want to continue?";
+		foodCollection.insert(end);
+		inp = {"type":"select","options":{"More suprise","End🔚"}};
+		response.put("action","context");
+		response.put("context_id","NSuprise");
+		question1 = {"name":"NSuprise","replies":foodCollection,"input":inp};
+		question = Collection();
+		question.insert(question1);
+		response.put("questions",question);
+	}
+	else if(ans.equals("End🔚"))
+	{
+		response.put("action","context");
+		response.put("context_id","QuitChat");
+		star = {"type":"star-rating","level":"5"};
+		question1 = {"name":"FoodQueries","replies":{{"text":"Thank you👋😉","image":"https://cur.glitter-graphics.net/pub/3625/3625215ll379wgzp9.gif","image_position":"fit"},"kindly give Valuable FeedBack for our improvement🔥"},"input":star};
+		question = Collection();
+		question.insert(question1);
+		response.put("questions",question);
+	}
+}
+else if(context_id.equals("FoodQueries"))
+{
+	ans = answers.get("FoodQueriesInput").get("text");
+	info ans;
+	// 	Api Response
+	apiResponse = getUrl("https://api.spoonacular.com/recipes/quickAnswer?q=" + ans + "&apiKey=5322f9ef228d45be807f305e0115147a");
+	if(apiResponse.isEmpty())
+	{
+		response.put("action","context");
+		response.put("context_id","FoodQueries");
+		question = {"name":"FoodQueriesInput","replies":{"Question Format Eg: How many calories in one Burger? or how many calories in 2 bananas?","Please ask your question in above format😉😊"},"input":{"type":"name","placeholder":"how many calories in 1 beans?","value":"","error":{"Enter a valid query"}}};
+		response.put("questions",question);
+	}
+	else
+	{
+		// 		response.put("action","context");
+		// 		response.put("context_id","End");
+		response.put("action","context");
+		response.put("context_id","QuitChat");
+		star = {"type":"star-rating","level":"5"};
+		question1 = {"name":"FoodQueries","replies":{{"text":apiResponse.get("answer"),"image":apiResponse.get("image"),"image_position":"fit"},"Kindly give Valuable feedback for our improvement🔥"},"input":star};
+		question = Collection();
+		question.insert(question1);
+		response.put("questions",question);
+	}
+}
+else if(context_id.equals("DietPlanner"))
+{
+	userEmail = answers.get("userEmail").get("text");
+	cri = "\"emailID\" =\"" + userEmail + "\"";
+	info cri;
+	res = zoho.sheet.getRecords("rr6ox03718b2a7cbb4b11a718220a1f3130a5","Sheet1",{"criteria":cri},"dbconnection");
+	info res;
+	if(res.get("records").isEmpty())
+	{
+		userName = answers.get("userName").get("text");
+		userHeight = answers.get("userHeight").get("text");
+		userWeight = answers.get("userWeight").get("text");
+		userWeight = userWeight.toNumber();
+		//Metrics conversion
+		userHeight = userHeight.toNumber() / 100;
+		//Calculating UserBMI
+		userBMI = userWeight / (userHeight * userHeight);
+		info userBMI;
+		rowData = Map();
+		rowData.put("emailID",userEmail);
+		rowData.put("name",userName);
+		rowData.put("height",userHeight);
+		rowData.put("weight",userWeight);
+		if(userBMI < 18.5)
+		{
+			rowData.put("bmiStatus","underWeight");
+		}
+		else if(userBMI >= 18.5 && userBMI <= 24.9)
+		{
+			rowData.put("bmiStatus","healthyRange");
+		}
+		else
+		{
+			rowData.put("bmiStatus","overWeight");
+		}
+		queryMap = Map();
+		addRecords = zoho.sheet.createRecords("rr6ox03718b2a7cbb4b11a718220a1f3130a5","Sheet1",rowData,queryMap,"dbconnection");
+		// 	response.put("action","reply");
+		// 	response.put("replies",{"Yeah😉 your physical inspection is completed🔥🔥"});
+		response.put("action","context");
+		response.put("context_id","displayDiet");
+		question1 = {"name":"Email","replies":{"Yeah😉.Your physical inspection is completed🔥🔥","Please enter your registered Email-Id 📧📩:"},"input":{"type":"email","placeholder":"Enter your Email","value":"","error":{"Enter a valid Email"}}};
+		question = Collection();
+		question.insert(question1);
+		response.put("questions",question);
+	}
+	else
+	{
+		userName = answers.get("userName").get("text");
+		userHeight = answers.get("userHeight").get("text");
+		userWeight = answers.get("userWeight").get("text");
+		userWeight = userWeight.toNumber();
+		//Metrics conversion
+		userHeight = userHeight.toNumber() / 100;
+		//Calculating UserBMI
+		userBMI = userWeight / (userHeight * userHeight);
+		info userBMI;
+		// 	info userWeight;
+		// 	info userHeight;
+		// 	info userBMI;
+		// 	Insert Into Our DataBase
+		new_values = Map();
+		new_values.put("emailID",userEmail);
+		new_values.put("name",userName);
+		new_values.put("height",userHeight);
+		new_values.put("weight",userWeight);
+		if(userBMI < 18.5)
+		{
+			new_values.put("bmiStatus","underWeight");
+		}
+		else if(userBMI >= 18.5 && userBMI <= 24.9)
+		{
+			new_values.put("bmiStatus","healthyRange");
+		}
+		else
+		{
+			new_values.put("bmiStatus","overWeight");
+		}
+		queryData = Map();
+		response = zoho.sheet.updateRecords("rr6ox03718b2a7cbb4b11a718220a1f3130a5","Sheet1",cri,new_values,queryData,"dbconnection");
+		response.put("action","context");
+		response.put("context_id","displayDiet");
+		question1 = {"name":"Email","replies":{{"text":"Your physical inspection is updated🔥🔥","image":"https://cdn.dribbble.com/users/3048287/screenshots/12097596/media/d036835a48923154f98b59379dd7c96f.gif","image_position":"fit"},"Now enter your registered Email-Id 📧📩:"},"input":{"type":"email","placeholder":"Enter your Email","value":"","error":{"Enter a valid Email-ID"}}};
+		question = Collection();
+		question.insert(question1);
+		response.put("questions",question);
+	}
+}
+else if(context_id.equals("displayDiet"))
+{
+	ans = answers.get("Email").get("text");
+	info ans;
+	cri = "\"emailID\" =" + ans;
+	info cri;
+	res = zoho.sheet.getRecords("rr6ox03718b2a7cbb4b11a718220a1f3130a5","Sheet1",{"criteria":cri},"dbconnection");
+	// 	Checking for null set
+	if(res.get("records").isEmpty())
+	{
+		response.put("action","context");
+		response.put("context_id","displayDiet");
+		question1 = {"name":"Email","replies":{{"text":"Sorry🥺🥺.Entered Email-Id is Invalid or may not exist in our data store","image":"https://cdn.dribbble.com/users/3048287/screenshots/12097596/media/d036835a48923154f98b59379dd7c96f.gif","image_position":"fit"},"Please Enter your registered Email-Id 📧📩:"},"input":{"type":"email","placeholder":"Enter your Email","value":"","error":{"Enter a valid Email-ID"}}};
+		question = Collection();
+		question.insert(question1);
+		response.put("questions",question);
+	}
+	else
+	{
+		bmiStatus = res.get("records").get(0).get("bmiStatus");
+		name = res.get("records").get(0).get("name");
+		info bmiStatus;
+		if(bmiStatus == "overWeight")
+		{
+			// 		response.put("action", "reply");
+			// 		response.put("replies","Check your mail");
+			response.put("action","reply");
+			response.put("replies",{{"text":"Follow this diet chart to lose weight","image":"https://assets.lybrate.com/q_auto:eco,f_auto,w_850/imgs/product/kwds/diet-chart/Obesity-Diet-Chart-v1.jpg","image_position":"fit"},"Kindly check your EMAIL for more details😀"});
+			sendmail
+			[
+				from :zoho.adminuserid
+				to :ans
+				subject :"Your diet chart"
+				message :"<body style=\"font-size:18px\"><div class=\"mainBlock\" style=\"text-align:center\"><h2>Hello " + name + " 🙋‍♂️</h2><p style=\"font-weight:700\">Follow this Healthy LifeStyle🔥🔥</p><p>You come under 🥵Over Weight🥵 BMI category</p></div><hr><div><p style=\"font-weight:700\">Try to avoid these food items :😉😁</p><ol><li>Rely on soft drinks, sweetened cereals, cookies and cakes, donuts and pastries, chips, and confectionery to get you through the day.</li><li>Don't skip meals. This will tempt you to snack and DO NOT snack between meals</li><li>Avoid eating quickly. Sit and chew each bite. Try using chopsticks!</li><li>Don't food shop when you're hungry.</li><li>Don't eat more than two or three pieces of fruit per day</li></ol><p style=\"font-weight:700\">Add these food items if your following diet chart :😉😁</p><ol><li>Eat more vegetables - add them at every meal.</li><li>Drink plenty of water - you can become hungry when thirsty.</li><li>Try eating off smaller plates so as to eat smaller portions</li><li>Exercise between 30 minutes to one hour each day with moderate exercise - brisk walking, team sport, cycling or swimming.</li><li>Be mindful of what you put in your mouth and your shopping trolley.</li></ol><table><tbody><tr><td style=\"text-align:center;border:1px solid #000;padding:3px;font-weight:600\" colspan=\"2\">Sunday</td></tr><tr><td width=\"20%\">Breakfast (8:00-8:30AM)</td><td style=\"text-align:center;padding:3px;font-weight:600\">3 egg whites + 1 toasted brown bread + 1/2 cup low fat milk (no sugar)</td></tr><tr><td width=\"20%\" style=\"text-align:center;padding:3px;font-weight:600\">Mid-Meal (11:00-11:30AM)</td><td>1 cup papaya</td></tr><tr><td width=\"20%\">Lunch (2:00-2:30PM)</td><td style=\"text-align:center;padding:3px;font-weight:600\">1 cup arhar dal + 1 chapatti + 1/2 cup low fat curd + salad</td></tr><tr><td width=\"20%\">Evening (4:00-4:30PM)</td><td>1 cup vegetable soup</td></tr><tr><td width=\"20%\">Dinner (8:00-8:30PM)</td><td>1 cup pumpkin + 1 chapatti + salad</td></tr><tr><td style=\"text-align:center;border:1px solid #000;font-weight:600\" colspan=\"2\">Monday</td></tr><tr><td width=\"20%\">Breakfast (8:00-8:30AM)</td><td>1 onion stuffed chapatti + 1/2 cup low fat curd</td></tr><tr><td width=\"20%\">Mid-Meal (11:00-11:30AM)</td><td>1 cup coconut water</td></tr><tr><td width=\"20%\">Lunch (2:00-2:30PM)</td><td>1 cup moong dal/ chicken curry + 1 chapatti + salad</td></tr><tr><td width=\"20%\">Evening (4:00-4:30PM)</td><td>1 cup pomegranate</td></tr><tr><td width=\"20%\">Dinner (8:00-8:30PM)</td><td>1 cup beans + 1 chapatti + salad</td></tr><tr><td style=\"text-align:center;border:1px solid #000;font-weight:600\" colspan=\"2\">Tuesday</td></tr><tr><td width=\"20%\">Breakfast (8:00-8:30AM)</td><td>2 besan cheela + 1/2 cup low fat curd</td></tr><tr><td width=\"20%\">Mid-Meal (11:00-11:30AM)</td><td>1 apple</td></tr><tr><td width=\"20%\">Lunch (2:00-2:30PM)</td><td>1 cup masoor dal + 1 chapatti + 1/2 up low fat curd + salad</td></tr><tr><td width=\"20%\">Evening (4:00-4:30PM)</td><td>1 cup tomato soup</td></tr><tr><td width=\"20%\">Dinner (8:00-8:30PM)</td><td>1 cup carrot peas vegetable +1 chapatti + salad</td></tr><tr><td style=\"text-align:center;border:1px solid #000;font-weight:600\" colspan=\"2\">Wednesday</td></tr><tr><td width=\"20%\">Breakfast (8:00-8:30AM)</td><td>1 cup vegetable brown bread upma + 1/2 cup low fat milk (no sugar)</td></tr><tr><td width=\"20%\">Mid-Meal (11:00-11:30AM)</td><td>1 cup musk melon</td></tr><tr><td width=\"20%\">Lunch (2:00-2:30PM)</td><td>1 cup rajma curry + 1 chapatti + salad</td></tr><tr><td width=\"20%\">Evening (4:00-4:30PM)</td><td>1 cup vegetable soup</td></tr><tr><td width=\"20%\">Dinner (8:00-8:30PM)</td><td>1 cup parwal vegetable + 1 chapatti + salad</td></tr><tr><td style=\"text-align:center;border:1px solid #000;font-weight:600\" colspan=\"2\">Thursday</td></tr><tr><td width=\"20%\">Breakfast (8:00-8:30AM)</td><td>1 cucmber hungcurd sandwich + 1/2 tsp green chutney + 1 orange</td></tr><tr><td width=\"20%\">Mid-Meal (11:00-11:30AM)</td><td>1 cup buttermilk</td></tr><tr><td width=\"20%\">Lunch (2:00-2:30PM)</td><td>1 cup white chana/ fish curry + 1 chapatti + salad</td></tr><tr><td width=\"20%\">Evening (4:00-4:30PM)</td><td>1 cup low fat milk (no sugar)</td></tr><tr><td width=\"20%\">Dinner (8:00-8:30PM)</td><td>1 cup cauliflower vegetable + 1 chapatti + salad</td></tr><tr><td style=\"text-align:center;border:1px solid #000;font-weight:600\" colspan=\"2\">Friday</td></tr><tr><td width=\"20%\">Breakfast (8:00-8:30AM)</td><td>1 cup vegetable poha + 1 cup low fat curd</td></tr><tr><td width=\"20%\">Mid-Meal (11:00-11:30AM)</td><td>1 cup watermelon</td></tr><tr><td width=\"20%\">Lunch (2:00-2:30PM)</td><td>1 cup chana dal + 1 chapatti + salad</td></tr><tr><td width=\"20%\">Evening (4:00-4:30PM)</td><td>1 cup sprouts salad</td></tr><tr><td width=\"20%\">Dinner (8:00-8:30PM)</td><td>1 cup tinda vegetable + 1 chapatti + salad</td></tr><tr><td style=\"text-align:center;border:1px solid #000;font-weight:600\" colspan=\"2\">Saturday</td></tr><tr><td width=\"20%\">Breakfast (8:00-8:30AM)</td><td>1 cup low fat milk with oats + 3-4 strawberries</td></tr><tr><td width=\"20%\">Mid-Meal (11:00-11:30AM)</td><td>1 cup coconut water</td></tr><tr><td width=\"20%\">Lunch (2:00-2:30PM)</td><td>1 cup soybean curry + 1 chapatti + 1/2 cup low fat curd + salad</td></tr><tr><td width=\"20%\">Evening (4:00-4:30PM)</td><td>1 cup fruit salad</td></tr><tr><td width=\"20%\">Dinner (8:00-8:30PM)</td><td>1 cup ghia vegetable + 1 chaptti + salad</td></tr></tbody></table></div></body>"
+			]
+		}
+		else if(bmiStatus == "healthyRange")
+		{
+			response.put("action","reply");
+			response.put("replies",{{"text":"Wow🔥You come under a Healthy BMI category,but you need to balance your Diet😁","image":"https://assets.lybrate.com/q_auto:eco,f_auto,w_850/imgs/product/kwds/diet-chart/Indian-Diet-Chart-v1.jpg","image_position":"fit"},"Kindly check your EMAIL for more details😀"});
+			sendmail
+			[
+				from :zoho.adminuserid
+				to :ans
+				subject :"Your diet chart"
+				message :"<body style=\"font-size:16px\"><div style=\"text-align:center\"><h2>Hello " + name + " 🙋‍♂️</h2><p style=\"font-weight:700\">Follow this Healthy LifeStyle🔥🔥</p><p style=\"font-weight:700\">You come under 🥳Heathy🥳 BMI category</p></div><hr><div><h2>Food Items To Limit</h2><ol><li>Avoid candy, soda, sugar, white rice, white pasta, white bread, sweet syrup, breakfast cereal, desserts, and pastries contain simple carbohydrates.</li><li>Avoid margarine, butter, eggs, milk, cheese, and red meat are high in saturated fat.</li><li>Avoid eating red meat as it contains high levels of saturated fat that shoot up the cholesterol levels in the blood.</li><li>Avoid eating fried foods such as fried chicken, deep fried foods, and potato fries.</li><li>Avoid alcohol</li><li>Avoid aerated and artificially sweetened drinks.</li></ol><h2 style=\"font-weight:700\">Do's And Dont's</h2><p style=\"font-weight:700\">Do's:</p><ol><li>Eat Healthy Fat to Lose Weight</li><li>Eat 2-3 hours before going to sleep</li><li>Make Healthy Swaps</li><li>Follow Smart Tips for Dining Out</li></ol><p style=\"font-weight:700\">Don'ts:</p><ol><li>Don't starve yourself</li><li>Dont dehydrate yourself</li><li>Dont eat if your are not hungry</li><li>Dont eat too much saturated fat</li></ol><table><tbody><tr><td style=\"text-align:center;font-weight:600\" colspan=\"2\">Sunday</td></tr><tr><td width=\"20%\">Breakfast (8:00-8:30AM)</td><td>Aloo Paratha (2) + Raita (1 cup)</td></tr><tr><td width=\"20%\">Mid-Meal (11:00-11:30AM)</td><td>Fruit Salad (1 cup) + Tender Coconut Water (1 glass)</td></tr><tr><td width=\"20%\">Lunch (2:00-2:30PM)</td><td>1 cup moong dal + 1 cup bhindi + 2 chapatti + salad</td></tr><tr><td width=\"20%\">Evening (4:00-4:30PM)</td><td>Tea/ Coffee (1 cup) + Boiled Chana Chat (1 cup)</td></tr><tr><td width=\"20%\">Dinner (8:00-8:30PM)</td><td>Chapati (2) + Jeera Aloo (1 cup)</td></tr><tr><td style=\"text-align:center;font-weight:600\" colspan=\"2\">Monday</td></tr><tr><td width=\"20%\">Breakfast (8:00-8:30AM)</td><td>Chapati (2) + Daal (1 cup)</td></tr><tr><td width=\"20%\">Mid-Meal (11:00-11:30AM)</td><td>Fruit Salad (1 cup) + Tender Coconut Water (1 glass)</td></tr><tr><td width=\"20%\">Lunch (2:00-2:30PM)</td><td>1 cup rajma + 1 cup gobhi aloo + 1 cup cucumber raita + 1 cup rice + 1 chapatti + onion salad</td></tr><tr><td width=\"20%\">Evening (4:00-4:30PM)</td><td>Tea/ Coffee (1 cup) + Aloo Chat (1 cup)</td></tr><tr><td width=\"20%\">Dinner (8:00-8:30PM)</td><td>Chapati (2) + Mix Veg.</td></tr><tr><td style=\"text-align:center;font-weight:600\" colspan=\"2\">Tuesday</td></tr><tr><td width=\"20%\">Breakfast (8:00-8:30AM)</td><td>Cheela (2) + Raita (1 cup)</td></tr><tr><td width=\"20%\">Mid-Meal (11:00-11:30AM)</td><td>Fruit Salad (1 cup) + Tender Coconut Water (1 glass)</td></tr><tr><td width=\"20%\">Lunch (2:00-2:30PM)</td><td>1 cup chicken curry + 1 cup boiled rice + 2 chapatti + salad</td></tr><tr><td width=\"20%\">Evening (4:00-4:30PM)</td><td>Tea/ Coffee (1 cup) + Papri Chat (1 cup)</td></tr><tr><td width=\"20%\">Dinner (8:00-8:30PM)</td><td>Chapati (2) + Fish Curry (1 cup)</td></tr><tr><td style=\"text-align:center;font-weight:600\" colspan=\"20%\">Wednesday</td></tr><tr><td width=\"20%\">Breakfast (8:00-8:30AM)</td><td>Veg. Poha (1 cup) + Raita (1/2 cup)</td></tr><tr><td width=\"20%\">Mid-Meal (11:00-11:30AM)</td><td>Fruit Salad (1 cup) + Tender Coconut Water (1 glass)</td></tr><tr><td width=\"20%\">Lunch (2:00-2:30PM)</td><td>1 cup white chana + palak paneer + 1 cup rice + 1 chapatti + salad</td></tr><tr><td width=\"20%\">Evening (4:00-4:30PM)</td><td>Tea/ Coffee (1 cup) + Mur-mure Chat (1 cup)</td></tr><tr><td width=\"20%\">Dinner (8:00-8:30PM)</td><td>Chapati (2) + Mustard Greens (1 cup)</td></tr><tr><td style=\"text-align:center;font-weight:600\" colspan=\"2\">Thursday</td></tr><tr><td width=\"20%\">Breakfast (8:00-8:30AM)</td><td>Aloo Paratha (2) + Raita (1 cup)</td></tr><tr><td width=\"20%\">Mid-Meal (11:00-11:30AM)</td><td>Fruit Salad (1 cup) + Tender Coconut Water (1 glass)</td></tr><tr><td width=\"20%\">Lunch (2:00-2:30PM)</td><td>1 cup soy bean curry + 1 cup tinda vegetable + 2 chapatti + salad</td></tr><tr><td width=\"20%\">Evening (4:00-4:30PM)</td><td>Tea/ Coffee (1 cup) + Boiled Chana Chat (1 cup)</td></tr><tr><td width=\"20%\">Dinner (8:00-8:30PM)</td><td>Chapati (2) + Bottle Gourd Curry (1 cup)</td></tr><tr><td style=\"text-align:center;font-weight:600\" colspan=\"2\">Friday</td></tr><tr><td width=\"20%\">Breakfast (8:00-8:30AM)</td><td>Chapati (2) + Daal (1 cup)</td></tr><tr><td width=\"20%\">Mid-Meal (11:00-11:30AM)</td><td>Fruit Salad (1 cup) + Tender Coconut Water (1 glass)</td></tr><tr><td width=\"20%\">Lunch (2:00-2:30PM)</td><td>1 cup fish curry + 1 cup boiled rice + 1 chapatti + 1 cup ghia raita + salad</td></tr><tr><td width=\"20%\">Evening (4:00-4:30PM)</td><td>Tea/ Coffee (1 cup) + Aloo Chat (1 cup)</td></tr><tr><td width=\"20%\">Dinner (8:00-8:30PM)</td><td>Chapati (2) + Matar n Mushroom Curry (1 cup)</td></tr><tr><td style=\"text-align:center;font-weight:600\" colspan=\"2\">Saturday</td></tr><tr><td width=\"20%\">Breakfast (8:00-8:30AM)</td><td>Veg Upma (1 cup) + Raita (1/2 cup)</td></tr><tr><td width=\"20%\">Mid-Meal (11:00-11:30AM)</td><td>Fruit Salad (1 cup) + Tender Coconut Water (1 glass)</td></tr><tr><td width=\"20%\">Lunch (2:00-2:30PM)</td><td>1 cup chicken curry + 1 cup rice + salad</td></tr><tr><td width=\"20%\">Evening (4:00-4:30PM)</td><td>Tea/ Coffee (1 cup) + Papri Chat (1 cup)</td></tr><tr><td width=\"20%\">Dinner (8:00-8:30PM)</td><td>Chapati (2) + Kofta (1 cup)</td></tr></tbody></table></div></body>"
+			]
+		}
+		else
+		{
+			response.put("action","reply");
+			response.put("replies",{{"text":"Follow this Diet chart to gain weight","image":"https://assets.lybrate.com/q_auto:eco,f_auto,w_1200,c_fill,g_auto/imgs/product/kwds/diet-chart/Weight-Gain-Diet-Chart-v1.jpg","image_position":"fit"},"Please check your EMAIL for more details😀"});
+			sendmail
+			[
+				from :zoho.adminuserid
+				to :ans
+				subject :"Your diet chart"
+				message :"<body style=\"font-size:15px\"><div style=\"text-align:center\"><h2>Hello " + name + " 🙋‍♂️</h2><p style=\"font-weight:700\">Follow this Healthy LifeStyle🔥🔥</p><p style=\"font-weight:700\">You come under 🥺Under Weight🥺 BMI category</p></div><hr><div><p style=\"font-weight:700\">Don'ts Do in Diet plan of weight gain😉😁</p><ol><li>Drink water before meals</li><li>Smoke</li></ol><p style=\"font-weight:700\">Do's</p><ol><li>Eat more often</li><li>Drink Milk</li><li>Try Weight gainer shakes</li><li>Use Bigger Plates</li><li>Add cream to your coffee</li><li>Take Creatine</li><li>Get Quality Sleep</li><li>Eat your protein first and vegetables last</li></ol><table><tbody><tr><td style=\"text-align:center;border:1px solid #000;padding:3px;font-weight:600\" colspan=\"2\">Sunday</td></tr><tr><td width=\"20%\">Breakfast (8:00-8:30AM)</td><td>2 egg brown bread sandwich + green chutney + 1 cup milk + 3 cashews + 4 almonds + 2 walnuts</td></tr><tr><td width=\"20%\">Mid-Meal (11:00-11:30AM)</td><td>1 cup banana shake</td></tr><tr><td width=\"20%\">Lunch (2:00-2:30PM)</td><td>1 cup arhar dal + 1 cup potato curry + 3 chapatti + 1/2 cup rice + 1/2 cup low fat curd + salad</td></tr><tr><td width=\"20%\">Evening (4:00-4:30PM)</td><td>1 cup strawberry smoothie + 1 cup vegetable poha</td></tr><tr><td width=\"20%\">Dinner (8:00-8:30PM)</td><td>1.5 cup chicken curry + 3 chapatti + salad</td></tr><tr><td style=\"text-align:center;border:1px solid #000;padding:3px;font-weight:600\" colspan=\"2\">Monday</td></tr><tr><td width=\"20%\">Breakfast (8:00-8:30AM)</td><td>3 onion stuffed parantha + 1 cup curd + 3 cashews + 4 almonds + 2 walnuts</td></tr><tr><td width=\"20%\">Mid-Meal (11:00-11:30AM)</td><td>1 cup mango shake</td></tr><tr><td width=\"20%\">Lunch (2:00-2:30PM)</td><td>1 cup moong dal/ chicken curry + 1 cup potato and caulifllower vegetable + 3 chapatti + 1/2 cup rice + salad</td></tr><tr><td width=\"20%\">Evening (4:00-4:30PM)</td><td>1 cup pomegranate juice + 2 butter toasted bread</td></tr><tr><td width=\"20%\">Dinner (8:00-8:30PM)</td><td>1 cup beans potato vegetable + 3 chapatti + salad</td></tr><tr><td style=\"text-align:center;border:1px solid #000;padding:3px;font-weight:600\" colspan=\"2\">Tuesday</td></tr><tr><td width=\"20%\">Breakfast (8:00-8:30AM)</td><td>3 paneer stuffed besan cheela + green chutney + 1 cup curd + 3 cashews + 4 almonds + 2 walnuts</td></tr><tr><td width=\"20%\">Mid-Meal (11:00-11:30AM)</td><td>1 apple smoothie with maple syrup</td></tr><tr><td width=\"20%\">Lunch (2:00-2:30PM)</td><td>1 cup masoor dal + 1 cup calocasia + 3 chapatti + 1/2 cup rice + 1 cup low curd + salad</td></tr><tr><td width=\"20%\">Evening (4:00-4:30PM)</td><td>1 cup tomato soup with bread crumbs + 1 cup aloo chaat</td></tr><tr><td width=\"20%\">Dinner (8:00-8:30PM)</td><td>1 cup carrot peas vegetable +3 chapatti + salad</td></tr><tr><td style=\"text-align:center;border:1px solid #000;padding:3px;font-weight:600\" colspan=\"2\">Wednesday</td></tr><tr><td width=\"20%\">Breakfast (8:00-8:30AM)</td><td>1.5 cup vegetable bread upma + 1 cup milk + 3 cashews + 4 almonds + 2 walnuts</td></tr><tr><td width=\"20%\">Mid-Meal (11:00-11:30AM)</td><td>1 cup ripe banana with 2 tsp ghee</td></tr><tr><td width=\"20%\">Lunch (2:00-2:30PM)</td><td>1 cup rajma curry + 1 cup spinach potato + 3 chapatti + 1/2 cup rice + salad</td></tr><tr><td width=\"20%\">Evening (4:00-4:30PM)</td><td>1 cup vegetable juice + 1 cup upma</td></tr><tr><td width=\"20%\">Dinner (8:00-8:30PM)</td><td>1.5 cup parwal vegetable + 3 chapatti + salad</td></tr><tr><td style=\"text-align:center;border:1px solid #000;padding:3px;font-weight:600\" colspan=\"2\">Thursday</td></tr><tr><td width=\"20%\">Breakfast (8:00-8:30AM)</td><td>2 cucmber potato sandwich + 1 tsp green chutney + 1 orange juice + 3 cshews + 2 walnuts + 4 almonds</td></tr><tr><td width=\"20%\">Mid-Meal (11:00-11:30AM)</td><td>1 cup buttermilk + 1 cup sweet potato chaat</td></tr><tr><td width=\"20%\">Lunch (2:00-2:30PM)</td><td>1 cup white chana/ fish curry + 3 chapatti + 1/2 cup rice + salad</td></tr><tr><td width=\"20%\">Evening (4:00-4:30PM)</td><td>1 cup almond milk + banana</td></tr><tr><td width=\"20%\">Dinner (8:00-8:30PM)</td><td>1 cup cauliflower potato vegetable + 3 chapatti + salad</td></tr><tr><td style=\"text-align:center;border:1px solid #000;padding:3px;font-weight:600\" colspan=\"2\">Friday</td></tr><tr><td width=\"20%\">Breakfast (8:00-8:30AM)</td><td>2 cup vegetable poha + 1 cup curd + 3 cashews + 4 almonds + 2 walnuts</td></tr><tr><td width=\"20%\">Mid-Meal (11:00-11:30AM)</td><td>2 cups watermelon juice</td></tr><tr><td width=\"20%\">Lunch (2:00-2:30PM)</td><td>1 cup chana dal + 1 cup bhindi vegetable + 3 chapatti + 1/2 cup rice + salad</td></tr><tr><td width=\"20%\">Evening (4:00-4:30PM)</td><td>1 cup sprouts salad + 2 potato cheela + green chutney</td></tr><tr><td width=\"20%\">Dinner (8:00-8:30PM)</td><td>1 cup peas mushroom vegetable + 3 chapatti + salad</td></tr><tr><td style=\"text-align:center;border:1px solid #000;padding:3px;font-weight:600\" colspan=\"2\">Saturday</td></tr><tr><td width=\"20%\">Breakfast (8:00-8:30AM)</td><td>3 vegetable suji cheela + 1 cup strawberry shake + 4 cashews + 4 almonds + 3 walnuts</td></tr><tr><td width=\"20%\">Mid-Meal (11:00-11:30AM)</td><td>1 cup coconut water + 1 cup pomegrate</td></tr><tr><td width=\"20%\">Lunch (2:00-2:30PM)</td><td>1 cup mix dal + 1 cup soybean curry + 3 chapatti + 1/2 cup curd + salad</td></tr><tr><td width=\"20%\">Evening (4:00-4:30PM)</td><td>1 cup fruit salad + 4 pc vegetable cutlets + green chutney</td></tr><tr><td width=\"20%\">Dinner (8:00-8:30PM)</td><td>1 cup karela vegetable + 3 chaptti + salad</td></tr></tbody></table></div></body>"
+			]
+		}
+	}
+}
+else if(context_id.equals("authentic"))
+{
+	ans = answers.get("authentic").get("text");
+	main = Collection();
+	info main;
+	obj = {};
+	if(ans == "Indian")
+	{
+		obj = {"type":"single-product","text":"Indian Cuisine Foods","title":"Methi Malai Paneer🤤","subtitle":"It is Creamy Fenugreek and Spinach🌿 with Cheese and secret indian spices ","elements":{{"id":"Methi Malai Paneer1","image":"https://i0.wp.com/hattyfoods.com/wp-content/uploads/2021/03/DSC_0710-2.jpg?fit=2175%2C1450&ssl=1"},{"id":"Methi Malai Paneer2","image":"https://ranveerbrar.com/wp-content/uploads/2021/02/methi-malai-paneer-scaled.jpg"}},"actions":{{"label":"Know more","name":"knowmore","type":"url","link":"https://www.saveur.com/article/recipes/methi-malai-paneer-creamy-fenugreek-and-spinach-with-cheese/"},{"label":"Other Indian Authentic foods","name":"OtherIndianAuthenticfoods","type":"url","link":"https://maunikagowardhan.co.uk/cook-in-a-curry/"}}};
+	}
+	else
+	{
+		obj = {"type":"single-product","text":"Italian Cuisine Foods","title":"FOCACCIA🤤🤤","subtitle":"Focaccia is a traditional Italian flatbread similar to pizza.","elements":{{"id":"FOCACCIA1","image":"https://www.funfoodfrolic.com/wp-content/uploads/2020/03/Focaccia-Thumbnail.jpg"},{"id":"FOCACCIA2","image":"https://www.thespruceeats.com/thmb/o3wSBGRZ2WnK2awykfKCrbIjaE0=/1333x1000/smart/filters:no_upscale()/focaccia-pizza-recipe-5213782-hero-03-1fd12e591656464e889edeab2e555425.jpg"}},"actions":{{"label":"Know more","name":"knowmore","type":"url","link":"https://www.saveur.com/article/recipes/methi-malai-paneer-creamy-fenugreek-and-spinach-with-cheese/"},{"label":"Other Italian Authentic foods","name":"OtherItalianAuthenticfoods","type":"url","link":"https://www.worldtravelconnector.com/italian-cuisine-traditional-foods-in-italy/"}}};
+	}
+	response.put("action","reply");
+	response.put("replies",{obj});
+}
+else if(context_id.equalsIgnoreCase("locate"))
+{
+	ans = answers.get("location").get("text");
+	radius = answers.get("distance").get("text").toNumber();
+	locationResponse = getUrl("https://api.geoapify.com/v1/geocode/search?text=" + ans + "&format=json&apiKey=112474f748a94b3e935a4d3eeaad61d0");
+	info locationResponse.keys();
+	info locationResponse.get("results").keys();
+	geoLocationResponse = zoho.map.geoCode(ans);
+	info geoLocationResponse;
+	if(geoLocationResponse.get("status") == "failure" || locationResponse.get("results").isEmpty())
+	{
+		response.put("action","context");
+		response.put("context_id","locate");
+		dropDown = {"type":"drop-down","placeholder":"in KiloMeters","options":{{"value":"0","label":"6","selected":true},{"value":"1","label":"12"},{"value":"1","label":"18"}},"select_label":"Select","multiple":false,"min_selection":1,"max_selection":1};
+		question1 = {"name":"location","replies":{{"text":"O0PS🥺🥺","image":"https://i.pinimg.com/originals/d7/ae/01/d7ae0170d3d5ffcbaa7f02fdda387a3b.gif","image_position":"fit"},"Sorry🥺 we can't locate 📌,Try again!"},"input":{"type":"name","placeholder":"Eg: Chennai,TamilNadu","value":"","error":{"Enter a valid address"}}};
+		question2 = {"name":"distance","replies":{"Select the distance radius in KiloMeter📏❓"},"input":dropDown};
+		question = Collection();
+		question.insert(question1);
+		question.insert(question2);
+		response.put("questions",question);
+	}
+	else
+	{
+		lat = locationResponse.get("results").get(0).get("lat");
+		lon = locationResponse.get("results").get(0).get("lon");
+		info "testing";
+		info lat;
+		info lon;
+		searchCriteria = {"apiKey":"112474f748a94b3e935a4d3eeaad61d0","latitude":lat,"longitude":lon,"keyword":"restaurants","radius":radius * 1000};
+		// 		Madurai,India
+		apiResponse = getUrl("https://api.geoapify.com/v2/places?categories=catering.restaurant,catering.cafe&filter=circle:" + searchCriteria.get("longitude") + "," + searchCriteria.get("latitude") + "," + searchCriteria.get("radius") + "&bias=proximity:" + searchCriteria.get("longitude") + "," + searchCriteria.get("latitude") + "&limit=5&apiKey=" + searchCriteria.get("apiKey"));
+		info apiResponse;
+		restaurantNumbers = apiResponse.get("features").size();
+		info restaurantNumbers;
+		if(restaurantNumbers >= 3)
+		{
+			object = {};
+			for each  i in {0,1,2}
+			{
+				elements = Map();
+				name = apiResponse.get("features").get(i).get("properties").get("name");
+				address = apiResponse.get("features").get(i).get("properties").get("formatted");
+				rLat = apiResponse.get("features").get(i).get("properties").get("lat");
+				rLon = apiResponse.get("features").get(i).get("properties").get("lon");
+				minDistance = apiResponse.get("features").get(i).get("properties").get("distance") / 1000;
+				elements.put("name",name);
+				elements.put("address",address);
+				elements.put("rLat",rLat);
+				elements.put("rLon",rLon);
+				elements.put("minDistance",minDistance);
+				object.insert(elements);
+			}
+			info object;
+			response.put("action","context");
+			response.put("context_id","displayHotels");
+			question = Collection();
+			q1 = {"name":"result1","replies":{"I have suggested some top restaurents for you😉..",{"text":"Restaurant Name : " + object.get(0).get("name") + " Address : " + object.get(0).get("address") + " Minimum Distance  : " + object.get(0).get("minDistance") + " Kms","image":"https://cdn.dribbble.com/users/461802/screenshots/4408316/restaurantanimationdribbble.gif","image_position":"fit"}},"input":{"type":"location","lat":object.get(0).get("rLat"),"lng":object.get(0).get("rLon"),"radius":"12 kms","label":"View Map","select_label":"Send my locale"}};
+			q2 = {"name":"result2","replies":{{"text":"Restaurant Name : " + object.get(1).get("name") + " Address : " + object.get(1).get("address") + " Minimum Distance  : " + object.get(1).get("minDistance") + " Kms","image":"https://cdn.dribbble.com/users/461802/screenshots/4408316/restaurantanimationdribbble.gif","image_position":"fit"}},"input":{"type":"location","lat":object.get(1).get("rLat"),"lng":object.get(1).get("rLon"),"radius":"12 kms","label":"View Map","select_label":"Send my locale"}};
+			q3 = {"name":"result3","replies":{{"text":"Restaurant Name : " + object.get(2).get("name") + " Address : " + object.get(2).get("address") + " Minimum Distance  : " + object.get(2).get("minDistance") + " Kms","image":"https://cdn.dribbble.com/users/461802/screenshots/4408316/restaurantanimationdribbble.gif","image_position":"fit"}},"input":{"type":"location","lat":object.get(2).get("rLat"),"lng":object.get(2).get("rLon"),"radius":"12 kms","label":"View Map","select_label":"Send my locale"}};
+			question.insert(q1);
+			question.insert(q2);
+			question.insert(q3);
+			response.put("questions",question);
+		}
+		else
+		{
+			object = {};
+			elements = Map();
+			name = apiResponse.get("features").get(i).get("properties").get("name");
+			address = apiResponse.get("features").get(i).get("properties").get("formatted");
+			rLat = apiResponse.get("features").get(i).get("properties").get("lat");
+			rLon = apiResponse.get("features").get(i).get("properties").get("lon");
+			minDistance = apiResponse.get("features").get(i).get("properties").get("distance");
+			elements.put("name",name);
+			elements.put("address",address);
+			elements.put("rLat",rLat);
+			elements.put("rLon",rLon);
+			elements.put("minDistance",minDistance);
+			object.insert(elements);
+			response.put("action","context");
+			response.put("context_id","displayHotels");
+			question = Collection();
+			q1 = {"name":"result1","replies":{"There are very few🥺 restaurants in your locality.",{"text":"Restaurant Name : " + object.get(0).get("name") + "  Address : " + object.get(0).get("address") + " Minimum Distance  : " + object.get(0).get("minDistance") + " Kms","image":"https://cdn.dribbble.com/users/461802/screenshots/4408316/restaurantanimationdribbble.gif","image_position":"fit"}},"input":{"type":"location","lat":object.get(0).get("rLat"),"lng":object.get(0).get("rLon"),"radius":"12 kms","label":"View Map","select_label":"Send my locale"}};
+			question.insert(q1);
+			response.put("questions",question);
+		}
+		// 		info apiResponse.get("features").get(0).keys();
+	}
+}
+else if(context_id.equalsIgnoreCase("displayHotels"))
+{
+	response.put("action","context");
+	response.put("context_id","QuitChat");
+	star = {"type":"star-rating","level":"5"};
+	question1 = {"name":"FoodQueries","replies":{{"text":"Thank you👋😉","image":"https://cur.glitter-graphics.net/pub/3625/3625215ll379wgzp9.gif","image_position":"fit"},"Kindly give valuable feedback for our improvement🔥"},"input":star};
+	question = Collection();
+	question.insert(question1);
+	response.put("questions",question);
+}
+else if(context_id.equalsIgnoreCase("order"))
+{
+	flag = answers.get("confirm").get("text");
+	totAmount = 0;
+	solution = {"Farfalle","Peas","Cilantro","Saffron"};
+	discountAmount = 0;
+	rand = randomNumber(100000,500000);
+	current_time_in_timezone = zoho.currenttime.toString("yyyy-MM-dd'T'HH:mm:ss","Asia/Kolkata").toTime("yyyy-MM-dd'T'HH:mm:ss");
+	userEmail = answers.get("email").get("text");
+	//userNumber = answers.get("userNumber").get("text");
+	mainBackUp = answers.get("mainCourse").get("text");
+	dessertBackUp = answers.get("dessert").get("text");
+	mainDish = answers.get("mainCourse").get("text").getPrefix("(");
+	dessert = answers.get("dessert").get("text").getPrefix("(");
+	address = answers.get("address").get("text");
+	ans = answers.get("discount").get("text");
+	if(solution.containsIgnoreCase(ans))
+	{
+		discountAmount = 75;
+	}
+	else
+	{
+		discountAmount = 0;
+	}
+	cri = "\"name\" =\"" + mainDish + "\"";
+	mainRes = zoho.sheet.getRecords("fg0ty557a0cdb631c4042bb7e6ae7da7737fb","Sheet1",{"criteria":cri},"dbconnection");
+	cri1 = "\"name\" =\"" + dessert + "\"";
+	dessertRes = zoho.sheet.getRecords("fg0ty557a0cdb631c4042bb7e6ae7da7737fb","Sheet1",{"criteria":cri1},"dbconnection");
+	mainPrice = mainRes.get("records").get(0).get("price");
+	dessertPrice = dessertRes.get("records").get(0).get("price");
+	totAmount = mainPrice + dessertPrice - discountAmount;
+	if(flag.equals("Confirm👍"))
+	{
+		// 		totAmount = 0;
+		// 		solution = {"Farfalle","Peas","Cilantro","Saffron"};
+		// 		discountAmount = 0;
+		// 		rand = randomNumber(100000,500000);
+		// 		current_time_in_timezone = zoho.currenttime.toString("yyyy-MM-dd'T'HH:mm:ss","Asia/Kolkata").toTime("yyyy-MM-dd'T'HH:mm:ss");
+		// 		userEmail = answers.get("userEmail").get("text");
+		// // 		userNumber = answers.get("userNumber").get("text");
+		// 		mainBackUp = answers.get("mainCourse").get("text");
+		// 		dessertBackUp = answers.get("dessert").get("text");
+		// 		mainDish = answers.get("mainCourse").get("text").getPrefix("(");
+		// 		dessert = answers.get("dessert").get("text").getPrefix("(");
+		// 		address = answers.get("address").get("text");
+		// 		ans = answers.get("discount").get("text");
+		// 		if(solution.containsIgnoreCase(ans))
+		// 		{
+		// 			discountAmount = 75;
+		// 		}
+		// 		else
+		// 		{
+		// 			discountAmount = 0;
+		// 		}
+		// 		cri = "\"name\" =\"" + mainDish + "\"";
+		// 		mainRes = zoho.sheet.getRecords("fg0ty557a0cdb631c4042bb7e6ae7da7737fb","Sheet1",{"criteria":cri},"dbconnection");
+		// 		cri1 = "\"name\" =\"" + dessert + "\"";
+		// 		dessertRes = zoho.sheet.getRecords("fg0ty557a0cdb631c4042bb7e6ae7da7737fb","Sheet1",{"criteria":cri1},"dbconnection");
+		// 		mainPrice = mainRes.get("records").get(0).get("price");
+		// 		dessertPrice = dessertRes.get("records").get(0).get("price");
+		// 		totAmount = mainPrice + dessertPrice - discountAmount;
+		// 		response.put("action", "reply");
+		// 		response.put("replies", "joolu");
+		sendmail
+		[
+			from :zoho.adminuserid
+			to :userEmail
+			subject :"Food Order Summary From Dionysus"
+			message :"<body style=\"font-style:italic;font-size:large;\"><div><h2>Food Order Details📝</h2><p><strong>From</strong>: Dionysus Food DeliveryPartner🤩</p><p><strong>To</strong>: " + address + "</p><hr></div><div><h3>🔥Order Summary🔥</h3><p>Order ID : #" + rand + "</p><p>" + mainBackUp + "<br>" + dessertBackUp + "</p><p>Discount Reduction : " + discountAmount + "</p><p>Total Bill Amount :₹" + totAmount + "</p><p>Order Placed at : " + current_time_in_timezone + "</p><hr></div><div style=\"text-align:center;\"><h3>✅Order Confirmed✅</h3><h4>Email Id : " + userEmail + "</h4><h4>Mode of Payement : Cash On Delivery🤩</h4><hr></div></body>"
+		]
+		response.put("action","context");
+		response.put("context_id","confirmMsg");
+		question1 = {"name":"success","replies":{{"text":"Order Successfully Places🤩🤩","image":"https://cdn.dribbble.com/users/4358240/screenshots/14825308/preview.gif","image_position":"fit"},"Please check your EMAIL📧📧 for more details😀"},"input":{"type":"select","options":{"Confirm👍"}}};
+		question = Collection();
+		question.insert(question1);
+		response.put("questions",question);
+	}
+	else
+	{
+		response.put("action","context");
+		response.put("context_id","QuitChat");
+		star = {"type":"star-rating","level":"5"};
+		question1 = {"name":"FoodQueries","replies":{{"text":"Thank you👋😉","image":"https://cur.glitter-graphics.net/pub/3625/3625215ll379wgzp9.gif","image_position":"fit"},"Kindly give valuable feedback for our improvement🔥"},"input":star};
+		question = Collection();
+		question.insert(question1);
+		response.put("questions",question);
+	}
+}
+else if(context_id.containsIgnoreCase("confirmMsg"))
+{
+	response.put("action","context");
+	response.put("context_id","QuitChat");
+	star = {"type":"star-rating","level":"5"};
+	question1 = {"name":"FoodQueries","replies":{{"text":"Thank you👋😉","image":"https://cur.glitter-graphics.net/pub/3625/3625215ll379wgzp9.gif","image_position":"fit"},"Kindly give valuable feedback for our improvement🔥"},"input":star};
+	question = Collection();
+	question.insert(question1);
+	response.put("questions",question);
+}
+else if(context_id.containsIgnoreCase("Chef"))
+{
+	ans = answers.get("Chef").get("text");
+	info ans;
+	apiResponse = getUrl("https://api.spoonacular.com/recipes/findByIngredients?ingredients=" + ans + "&apiKey=94b017bdec284215be63d76585b252e7");
+	info apiResponse;
+	if(apiResponse.isEmpty())
+	{
+		response.put("action","context");
+		response.put("context_id","Chef");
+		question1 = {"name":"Chef","replies":{"Hi!I am the chef. Ask me about recipes.","What ingredients do you have?"},"input":{"type":"name","placeholder":"Eg:Apple,sugar","value":"","error":{"Enter a valid format"}}};
+		question.insert(question1);
+		// 	question.insert(question2);
+		response.put("questions",question);
+	}
+	else
+	{
+		response.put("action","context");
+		response.put("context_id","End");
+		info apiResponse.get(0).get("title");
+		response.put("action","context");
+		response.put("context_id","QuitChat");
+		star = {"type":"star-rating","level":"5"};
+		question1 = {"name":"Chef","replies":{{"text":"Recipe Name :" + apiResponse.get(0).get("title"),"image":apiResponse.get(0).get("image"),"image_position":"fit"},{"text":"Thank you👋😉","image":"https://cur.glitter-graphics.net/pub/3625/3625215ll379wgzp9.gif","image_position":"fit"},"Kindly give valuable feedback for our improvement🔥"},"input":star};
+		question = Collection();
+		question.insert(question1);
+		response.put("questions",question);
+	}
+}
+else if(context_id.equalsIgnoreCase("End"))
+{
+	ans1 = answers.get("End").get("text");
+	ans2 = answers.get("check").get("text");
+	if(ans1.equalsIgnoreCase("Continue👍") && ans2.equalsIgnoreCase("Yes!I am a vegetarian🍃"))
+	{
+		response.put("action","reply");
+		response.put("replies",{"Great!How do you like your food?"});
+		response.put("action","context");
+		response.put("context_id","VTaste");
+		question = Collection();
+		question1 = {"name":"VTaste","replies":{{"text":"Select your taste😋"}},"suggestions":{"Spicy","Sweet","Suprise me"}};
+		question.insert(question1);
+		response.put("questions",question);
+	}
+	else if(ans1.equalsIgnoreCase("Continue👍") && ans2.equalsIgnoreCase("No!I am not🍗"))
+	{
+		response.put("action","reply");
+		response.put("replies",{"Great!How do you like your food?"});
+		response.put("action","context");
+		response.put("context_id","NTaste");
+		question = Collection();
+		question1 = {"name":"NTaste","replies":{{"text":"Select your taste🔥🔥😁"}},"suggestions":{"Spicy","Sweet","Suprise me"}};
+		question.insert(question1);
+		response.put("questions",question);
+	}
+	else
+	{
+		response.put("action","context");
+		response.put("context_id","QuitChat");
+		star = {"type":"star-rating","level":"5"};
+		question1 = {"name":"FoodQueries","replies":{{"text":"Thank you👋😉","image":"https://cur.glitter-graphics.net/pub/3625/3625215ll379wgzp9.gif","image_position":"fit"},"Kindly give valuable feedback for our improvement🔥"},"input":star};
+		question = Collection();
+		question.insert(question1);
+		response.put("questions",question);
+	}
+}
+else if(context_id.equalsIgnoreCase("QuitChat"))
+{
+	response.put("action","reply");
+	response.put("replies",{"Bye Bye👋👋😉. Type 'Hi' to chat again."});
+}
+return response;
+

@@ -1,0 +1,123 @@
+response = Map();
+msg = message.get("text");
+info msg;
+if(msg.containsIgnoreCase("Suggest me a delicious food"))
+{
+	response.put("action","context");
+	response.put("context_id","Food");
+	question = {"name":"Food","replies":{"Sure!Are you a vegetarian?"},"suggestions":{"Yes!I am a vegetarian🍃","No!I am not🍗"}};
+	response.put("questions",{question});
+}
+else if(msg.containsIgnoreCase("Diet Chart"))
+{
+	response.put("action","context");
+	response.put("context_id","DietPlanner");
+	// 	Question for Quick physical checkup
+	question1 = {"name":"userEmail","replies":{{"text":"Eat Healthy for Long Life🥦🌿","image":"https://media.tenor.com/IP1cFAOQQWsAAAAC/anime-food.gif","image_position":"fit"},"Please enter Email-Id 📧📩:"},"input":{"type":"email","placeholder":"Enter your Email","value":"","error":{"Enter a valid email"}}};
+	question2 = {"name":"userName","replies":{"Your good name :"},"input":{"type":"name","placeholder":"Enter your name","value":"","error":{"Enter a valid name"}}};
+	// 	question2 = {"name":"userEmail","replies":{"Please enter emailId 📧📩:"},"input":{"type":"email","placeholder" : "Enter your Email", "value" : "","error" : {"Enter a valid email"}}};
+	question3 = {"name":"userHeight","replies":{"Your height in Centimeters📏 :"},"input":{"type":"name","placeholder":"Enter your height","value":"","error":{"Enter a valid name"}}};
+	question4 = {"name":"userWeight","replies":{"Your weight in Kilograms⚖️ :"},"input":{"type":"name","placeholder":"Enter your weight","value":"","error":{"Enter a valid name"}}};
+	question = Collection();
+	question.insert(question1);
+	question.insert(question2);
+	question.insert(question3);
+	question.insert(question4);
+	response.put("questions",question);
+	info response;
+}
+else if(msg.containsIgnoreCase("Nutritionist"))
+{
+	response.put("action","context");
+	response.put("context_id","FoodQueries");
+	// 	question1 = {"name":"FoodQueries","replies":{}};
+	question1 = {"name":"FoodQueriesInput","replies":{{"text":"Ask me anything related to food calories🍊🍉","image":"https://cdn.dribbble.com/users/3524019/screenshots/16284498/media/d03e7f6dcf5f3a6973b650e3ede72920.gif","image_position":"fit"}},"input":{"type":"name","placeholder":"Eg:How much vitamin c is in 2 apples?","value":"","error":{"Enter a valid query"}}};
+	question = Collection();
+	question.insert(question1);
+	response.put("questions",question);
+	info response;
+}
+else if(msg.containsIgnoreCase("Restaurant"))
+{
+	response.put("action","context");
+	response.put("context_id","locate");
+	dropDown = {"type":"drop-down","placeholder":"in KiloMeters","options":{{"value":"0","label":"6","selected":true},{"value":"1","label":"12"},{"value":"1","label":"18"}},"select_label":"Select","multiple":false,"min_selection":1,"max_selection":1};
+	question1 = {"name":"location","replies":{{"text":"Please enter your location: 📌🗺️","image":"https://i.pinimg.com/originals/d7/ae/01/d7ae0170d3d5ffcbaa7f02fdda387a3b.gif","image_position":"fit"}},"input":{"type":"name","placeholder":"Eg: Chennai,India","value":"","error":{"Enter a valid address"}}};
+	question2 = {"name":"distance","replies":{"Select the distance radius in Kilometer📏❓"},"input":dropDown};
+	question = Collection();
+	question.insert(question1);
+	question.insert(question2);
+	response.put("questions",question);
+}
+else if(msg.containsIgnoreCase("Order Food"))
+{
+	response.put("action","context");
+	response.put("context_id","order");
+	quiz = {"Which type of pasta means butterflies in Italian ❓","Which vegetable is usually eaten with fish and chips❓","How is coriander called in American English❓","Which spice is used in a Paella/Briyani to give the rice the yellow colour❓"};
+	rand = randomNumber(0,quiz.size());
+	dropDownMain = {"type":"drop-down","placeholder":"Main course🤤❓","options":{{"value":"0","label":" Spicy Apricot Chicken Wings(non): ₹350","selected":true},{"value":"1","label":" Mutton Curry Rice(non): ₹250"},{"value":"2","label":" Spiced saffron and cashew rice(veg): ₹200"},{"value":"3","label":"Misal(veg): ₹200"}},"select_label":"Select","multiple":false,"min_selection":1,"max_selection":1};
+	dropDownDessert = {"type":"drop-down","placeholder":"Main course🤤❓","options":{{"value":"0","label":" Mutton Haleem(non): ₹150","selected":true},{"value":"1","label":"Baked Cheese cake(non): ₹150"},{"value":"2","label":" Ras Malai(veg): ₹210"}},"select_label":"Select","multiple":false,"min_selection":1,"max_selection":1};
+	// 	Basic Details for Delivery
+	question1 = {"name":"email","replies":{"Please enter emailId 📧📩:"},"input":{"type":"email","placeholder":"Enter your Email","value":"","error":{"Enter a valid email"}}};
+	// 	question2 = {"name":"userNumber","replies":{"Your Mobile Number📞 :"},"input":{"type":"tel","placeholder":"Enter your phone number","value":"","error":{"Enter a valid phone number"}}};
+	question3 = {"name":"mainCourse","replies":{{"text":"✨Maincourses always are delicious🤤✨","image":"https://quizizz.com/media/resource/gs/quizizz-media/questions/30d0dc4d-2d76-4a83-b1a4-285e2238157f?w=90&h=90","image_position":"fit"}},"input":dropDownMain};
+	question4 = {"name":"dessert","replies":{{"text":"✨You can't be sad when you're eating dessert✨","image":"https://animesher.com/orig/1/123/1233/12334/animesher.com_food-anime-cake-food-1233413.gif","image_position":"fit"}},"input":dropDownDessert};
+	question5 = {"name":"discount","replies":{{"text":"Fun Quiz🤔,Play this to get 10% Discount🤩🤩","image":"https://www.pngarts.com/files/3/10-Percent-off-PNG-Transparent-Image.png","image_position":"fit"},quiz.get(rand)},"input":{"type":"name","placeholder":"Enter your Answer ❓","value":"","error":{"Enter a valid format"}}};
+	inp = {"type":"select","options":{"Confirm👍","Discard🥺"}};
+	question6 = {"name":"confirm","replies":{"Can we place the Order❓"},"input":inp};
+	question7 = {"name":"address","replies":{"Kindly share your delivery address📌","Check your Email after Entering the address🔥"},"input":{"type":"location","label":"Share Location","select_label":"Send my locale"}};
+	question = Collection();
+	question.insert(question1);
+	// 	question.insert(question2);
+	question.insert(question3);
+	question.insert(question4);
+	question.insert(question5);
+	question.insert(question6);
+	question.insert(question7);
+	response.put("questions",question);
+}
+else if(msg.containsIgnoreCase("Cuisine"))
+{
+	foodImg = {"https://as2.ftcdn.net/v2/jpg/01/88/40/35/500_F_188403567_Uu8NE2o6lE2rKriApCcuDsR6g3301ljM.jpg","https://previews.123rf.com/images/losinstantes/losinstantes1712/losinstantes171200024/91742387-traditional-italian-food-on-a-dark-background-with-copy-space-ingredients-for-cooking-tomatoes-on-br.jpg","https://media.istockphoto.com/photos/variety-of-spices-and-herbs-on-kitchen-table-picture-id938050806?k=20&m=938050806&s=612x612&w=0&h=HUjnjjymEPGE5PnUPYo24yi1Ehmobd69cJ2IiManlN4="};
+	dropDown = {"type":"drop-down","placeholder":"Select the Cusine❓","options":{{"value":"0","label":" Indian","selected":true},{"value":"1","label":" Italian"}},"select_label":"Select","multiple":false,"min_selection":1,"max_selection":1};
+	rand = randomNumber(0,foodImg.size());
+	response.put("action","context");
+	response.put("context_id","authentic");
+	question1 = {"name":"authentic","replies":{{"text":"✨Cuisine is when things taste like themselves.-Curnonsky✨","image":foodImg.get(rand),"image_position":"fit"}},"input":dropDown};
+	question = Collection();
+	question.insert(question1);
+	response.put("questions",question);
+}
+else if(msg.containsIgnoreCase("Chef"))
+{
+	response.put("action","context");
+	response.put("context_id","Chef");
+	question = Collection();
+	question1 = {"name":"Chef","replies":{"Hi!I am the chef. Ask me about recipes.","What ingredients do you have?"},"input":{"type":"name","placeholder":"Eg:Apple,sugar","value":"","error":{"Enter a valid format"}}};
+	question.insert(question1);
+	// 	question.insert(question2);
+	response.put("questions",question);
+}
+else if(msg.containsIgnoreCase("End"))
+{
+	response.put("action","context");
+	response.put("context_id","QuitChat");
+	star = {"type":"star-rating","level":"5"};
+	question1 = {"name":"FoodQueries","replies":{{"text":"Thank you👋😉","image":"https://cur.glitter-graphics.net/pub/3625/3625215ll379wgzp9.gif","image_position":"fit"},"Kindly give valuable feedback for our improvement🔥"},"input":star};
+	question = Collection();
+	question.insert(question1);
+	response.put("questions",question);
+}
+else if(msg.containsIgnoreCase("HI"))
+{
+	response.put("replies",{{"text":"Hi there👋!What can I do for you❓❓❓"}});
+	response.put("suggestions",{"Suggest me a delicious food🤤","Dionysus the Nutritionist😉.Ask me anything?","Dionysus the chef🧑‍🍳- Ask recipes"," Suggest me a diet Chart","Search by Cuisine🗺️","Order food with Dionysus🤤","Restaurant near me📌","End chat🛑"});
+}
+else
+{
+	// 	response.put("replies",{"Sorry I didn't get you"});
+	response.put("replies",{{"text":"Sorry I didn't get you","image":"https://img.buzzfeed.com/buzzfeed-static/static/2020-07/24/21/asset/3fd2751e84e2/anigif_sub-buzz-2055-1595624868-24.gif","image_position":"fit"},"What can i do for you❓❓"});
+	response.put("suggestions",{"Suggest me a delicious food🤤","Dionysus the Nutritionist😉.Ask me anything?","Dionysus the chef🧑‍🍳- Ask recipes"," Suggest me a diet Chart","Search by Cuisine🗺️","Order food with Dionysus🤤","Restaurant near me📌","End chat🛑"});
+	//response.put(
+}
+return response;
