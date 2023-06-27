@@ -11,6 +11,6 @@ It is food bot🤤 made by us for zoho-CliqTrix competition in zoho salesIQ plat
 
 ## Tools and API libraries
 <br>Backend  : Deluge by Zoho<br>
-<br>Platform : Zoho SalesIQ✅
+<br>Platform : Zoho SalesIQ✅<br>
 <a href ="https://www.geoapify.com/">GEOapify-API</a> - for location based services<br>
-<a href= "https://spoonacular.com/food-api">SPOONCULAR API</a><br>
+<a href= "https://spoonacular.com/food-api">SPOONCULAR API</a> for food related information<br>
